@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hand.demo.infra.mapper.TaskMapper">
+    <resultMap id="TaskMapper" type="com.hand.demo.domain.entity.Task">
+        <!-- Primary Key Mapping -->
+        <id column="id" property="id"/>
+
+        <!-- Other Fields Mapping -->
+        <result column="employee_id" property="employeeId"/>
+<!--        <result column="employee_name" property="employeeName"/>-->
+<!--        <result column="employee_number" property="employeeNumber"/>-->
+        <result column="state" property="state"/>
+        <result column="task_description" property="taskDescription"/>
+        <result column="task_number" property="taskNumber"/>
+        <result column="tenant_id" property="tenantId"/>
+    </resultMap>
+
+    <select id="selectTask" resultType="com.hand.demo.domain.entity.Task">
+        select tt.id, tt.employee_id, tt.task_description,
+               tt.task_number, tt.state, tt.tenant_id from todo_task as tt
+    </select>
+</mapper>
