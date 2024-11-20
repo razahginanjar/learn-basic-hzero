@@ -15,6 +15,7 @@ public class RouteExtraDataManager implements ExtraDataManager {
 	@Autowired
     private org.springframework.core.env.Environment environment;
 
+
     @Override
     public ExtraData getData() {
         ChoerodonRouteData choerodonRouteData = new ChoerodonRouteData();

@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-<!--        <groupId>com.hand.todo</groupId>-->
-<!--        <artifactId>demo-parent</artifactId>-->
-<!--        <version>0.0.1</version>-->
-        <groupId>org.hzero</groupId>
-        <artifactId>hzero-parent</artifactId>
-        <version>1.11.0.RELEASE</version>
+        <groupId>com.hand.todo</groupId>
+        <artifactId>demo-parent</artifactId>
+        <version>0.0.1</version>
+<!--        <groupId>org.hzero</groupId>-->
+<!--        <artifactId>hzero-parent</artifactId>-->
+<!--        <version>1.11.0.RELEASE</version>-->
     </parent>
     <groupId>com.hand.todo</groupId>
     <artifactId>demo</artifactId>
@@ -104,6 +104,10 @@
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hzero.boot</groupId>
+            <artifactId>hzero-boot-message</artifactId>
         </dependency>
 
     </dependencies>
