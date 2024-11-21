@@ -76,7 +76,9 @@ public class MessageService {
                 );
     }
 
-    public Message sendFeishuMessage(long tenantId, String contextMessage, String email)
+    public Message sendFeishuMessage(
+            long tenantId, String email, String emailSender,
+            String empNumber, String name)
     {
         List<Map<String, String>> receivers = new ArrayList<>();
         Map<String, String> receiver = new HashMap<>();
@@ -84,9 +86,9 @@ public class MessageService {
         receivers.add(receiver);
 
         Map<String, Object> args = new HashMap<>();
-        args.put("userName", "Razah Deden G");
-        args.put("empNumber", 47837);
-        args.put("email", "razah.deden@hand-global.com");
+        args.put("userName", name);
+        args.put("empNumber", empNumber);
+        args.put("email", emailSender);
         return messageClient.sendFlyBook(tenantId,
                 SERVER_CODE_FEISHU,
                 TEMPLATE_CODE_FEISHU,
