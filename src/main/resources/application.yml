@@ -98,3 +98,7 @@ logging:
     org.apache.ibatis: debug
     io.choerodon: debug
     org.hzero: debug
+#hzero:
+#  scheduler:
+#    executor-code: DEMO-47837
+#    auto-register: true

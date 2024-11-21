@@ -2,19 +2,25 @@ package com.hand.demo.app.service.impl;
 
 import com.hand.demo.api.dto.MessageRequest;
 import org.hzero.boot.message.MessageClient;
+import org.hzero.boot.message.entity.FlyBookMsgType;
 import org.hzero.boot.message.entity.Message;
 import org.hzero.boot.message.entity.Receiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class MessageService {
+    private static final Logger log = LoggerFactory.getLogger(MessageService.class);
     private final MessageClient messageClient;
     private final String TEMPLATE_CODE = "TEST-47837-FROM-CODING";
+    private final String TEMPLATE_CODE_FEISHU = "TEST-FEISHU-47837";
     private final String LANGUAGE_CODE = "en_US";
     private final String SERVER_CODE = "TEST-47837";
     private final String SUBJECT = "FROM CODE";
+    private final String SERVER_CODE_FEISHU = "FEIYU";
 
     public MessageService(MessageClient messageClient) {
         this.messageClient = messageClient;
@@ -70,4 +76,24 @@ public class MessageService {
                 );
     }
 
+    public Message sendFeishuMessage(long tenantId, String contextMessage, String email)
+    {
+        List<Map<String, String>> receivers = new ArrayList<>();
+        Map<String, String> receiver = new HashMap<>();
+        receiver.put("email", email);
+        receivers.add(receiver);
+
+        Map<String, Object> args = new HashMap<>();
+        args.put("userName", "Razah Deden G");
+        args.put("empNumber", 47837);
+        args.put("email", "razah.deden@hand-global.com");
+        return messageClient.sendFlyBook(tenantId,
+                SERVER_CODE_FEISHU,
+                TEMPLATE_CODE_FEISHU,
+                FlyBookMsgType.TEXT,
+                LANGUAGE_CODE,
+                receivers,
+                args
+        );
+    }
 }
