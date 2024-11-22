@@ -1,6 +1,8 @@
 package com.hand.demo.app.service.impl;
 
 import com.hand.demo.api.dto.MessageRequest;
+import com.hand.demo.domain.entity.User;
+import com.hand.demo.domain.repository.UserRepository;
 import org.hzero.boot.message.MessageClient;
 import org.hzero.boot.message.entity.FlyBookMsgType;
 import org.hzero.boot.message.entity.Message;
@@ -21,9 +23,11 @@ public class MessageService {
     private final String SERVER_CODE = "TEST-47837";
     private final String SUBJECT = "FROM CODE";
     private final String SERVER_CODE_FEISHU = "FEIYU";
+    private final UserRepository userRepository;
 
-    public MessageService(MessageClient messageClient) {
+    public MessageService(MessageClient messageClient, UserRepository userRepository) {
         this.messageClient = messageClient;
+        this.userRepository = userRepository;
     }
 
     public List<Message> sendNotification(Long tenantId, Long userId, List<String> message)
@@ -77,18 +81,20 @@ public class MessageService {
     }
 
     public Message sendFeishuMessage(
-            long tenantId, String email, String emailSender,
-            String empNumber, String name)
+            long tenantId, String email, Map<String, String> map)
     {
         List<Map<String, String>> receivers = new ArrayList<>();
         Map<String, String> receiver = new HashMap<>();
         receiver.put("email", email);
         receivers.add(receiver);
 
+        User user = userRepository.findByUserAccount(Long.valueOf(map.get("userId")));
+
         Map<String, Object> args = new HashMap<>();
-        args.put("userName", name);
-        args.put("empNumber", empNumber);
-        args.put("email", emailSender);
+        args.put("userName", user.getEmployeeName());
+        args.put("empNumber", user.getEmployeeNumber());
+        args.put("email", user.getEmail());
+
         return messageClient.sendFlyBook(tenantId,
                 SERVER_CODE_FEISHU,
                 TEMPLATE_CODE_FEISHU,

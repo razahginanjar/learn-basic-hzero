@@ -19,28 +19,23 @@ public class JobTaskHandler implements IJobHandler {
 
     private static final Logger log = LoggerFactory.getLogger(JobTaskHandler.class);
     private final MessageService messageService;
-    private final UserRepository userRepository;
 
-    public JobTaskHandler(MessageService messageService, UserRepository userRepository) {
+    public JobTaskHandler(MessageService messageService) {
         this.messageService = messageService;
-        this.userRepository = userRepository;
     }
 
     @Override
     public ReturnT execute(Map<String, String> map, SchedulerTool tool) {
-        log.info("This is log service from: 47837 id: {}", map.get("userId"));
-
-        String message = "to mr zeki this spam email from razah empId: 47837";
+        log.info("This is log service from: 47837 id: {}", map.get("empNumber"));
 
         String email = "shaoqin.zhou@hand-china.com";
 
-        User user = userRepository.findByUserAccount(Long.valueOf(map.get("userId")));
         log.info("this is user account in long {}", map.get("userId"));
-        Message message1 = messageService.sendFeishuMessage(0, email, user.getEmail(),
-                user.getEmployeeNumber(),
-                user.getEmployeeName());
-        log.info("this message is: {}", message1);
-        log.info("message from has been sent: {}", map.get("userId"));
+        //Message message1 = messageService.sendFeishuMessage(0, email, map);
+
+        //log.info("this message is: {}", message1);
+        log.info("message from has been sent: {}", map.get("empNumber"));
+
         return ReturnT.SUCCESS;
     }
 
