@@ -20,7 +20,7 @@ import java.util.UUID;
 @ApiModel("任务信息")
 @ModifyAudit
 @VersionAudit
-@Table(name = "todo_task")
+@Table(name = "todo_task_47837")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Task extends AuditDomain {
     public static final String FIELD_ID = "id";

@@ -15,6 +15,8 @@ import org.hzero.mybatis.helper.SecurityTokenHelper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = SwaggerTags.TASK)
 @RestController("taskController.v1")
 @RequestMapping("/v1/ra/{organizationId}/tasks")
@@ -33,7 +35,7 @@ public class TaskController extends BaseController {
     @ApiOperation(value = "根据taskNumber分页查询task")
     @GetMapping
     public ResponseEntity<Page<Task>> list(@PathVariable("organizationId") Long tenantId,
-                                           Task task, PageRequest pageRequest) {
+                                           @RequestBody Task task, PageRequest pageRequest) {
         task.setTenantId(tenantId);
         return Results.success(taskRepository.pageTask(task, pageRequest));
     }
@@ -75,5 +77,13 @@ public class TaskController extends BaseController {
     public void delete(@PathVariable Long organizationId, @PathVariable @ApiParam(
             value = "任务编号") String taskNumber) {
         taskService.deleteByTaskNumber(taskNumber);
+    }
+
+
+    @Permission(level = ResourceLevel.ORGANIZATION)
+    @ApiOperation(value = "根据taskNumber分页查询task")
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Task>> listAll(@PathVariable("organizationId") Long tenantId) {
+        return Results.success(taskRepository.selectAll());
     }
 }
