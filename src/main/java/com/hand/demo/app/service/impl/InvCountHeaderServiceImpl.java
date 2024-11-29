@@ -1,6 +1,7 @@
 package com.hand.demo.app.service.impl;
 
 import com.hand.demo.api.dto.InvCountRequest;
+import com.hand.demo.infra.constant.StatusDoc;
 import io.choerodon.core.domain.Page;
 import io.choerodon.mybatis.pagehelper.PageHelper;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
@@ -53,7 +54,10 @@ public class InvCountHeaderServiceImpl implements InvCountHeaderService {
         }
         else {
             log.info("It is in update");
-            invCountHeader.setApprovedTime(Date.from(Instant.now()));
+            if(invCountRequest.getStatusDoc().equals(StatusDoc.APPROVAL))
+            {
+                invCountHeader.setApprovedTime(Date.from(Instant.now()));
+            }
             invCountHeader.setCountStatus(invCountRequest.getStatusDoc());
             invCountHeader.setWorkflowId(invCountRequest.getWorkFlowId());
             invCountHeader.setTenantId(tenantId);

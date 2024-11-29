@@ -11,6 +11,7 @@ import io.choerodon.mybatis.pagehelper.domain.Sort;
 import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import org.hzero.boot.workflow.dto.PersonalTodoDTO;
+import org.hzero.boot.workflow.dto.ProcessInstanceDTO;
 import org.hzero.boot.workflow.dto.RunTaskHistory;
 import org.hzero.core.base.BaseController;
 import org.hzero.core.util.Results;
@@ -84,4 +85,47 @@ public class WorkFlowController extends BaseController {
         return Results.success(approvedHistory);
     }
 
+    @ApiOperation(value = "get detail instant history")
+    @Permission(level = ResourceLevel.ORGANIZATION)
+    @GetMapping(
+            path = "/detail"
+    )
+    public ResponseEntity<?> getDetailInstant
+            (@PathVariable Long organizationId,
+             @RequestParam(name = "flowKey")String flowKey,
+             @RequestParam(name = "businessKey") String businessKey)
+    {
+        ProcessInstanceDTO.ProcessInstanceViewDTO detailsInstant = workFlowService.getDetailsInstant(organizationId, flowKey, businessKey);
+        return Results.success(detailsInstant);
+    }
+
+
+
+    @ApiOperation(value = "withdrawl specific")
+    @Permission(level = ResourceLevel.ORGANIZATION)
+    @PutMapping(
+
+    )
+    public ResponseEntity<?> approve
+            (@PathVariable Long organizationId,
+             @RequestParam(name = "flowKey")String flowKey,
+             @RequestParam(name = "businessKey") String businessKey)
+    {
+        workFlowService.approve(organizationId, flowKey, businessKey);
+        return Results.success();
+    }
+
+
+
+    @ApiOperation(value = "withdrawl specific")
+    @Permission(level = ResourceLevel.ORGANIZATION)
+    @PutMapping
+    public ResponseEntity<?> reject
+            (@PathVariable Long organizationId,
+             @RequestParam(name = "flowKey")String flowKey,
+             @RequestParam(name = "businessKey") String businessKey)
+    {
+        workFlowService.reject(organizationId, flowKey, businessKey);
+        return Results.success();
+    }
 }
