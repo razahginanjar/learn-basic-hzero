@@ -1,8 +1,9 @@
 package com.hand.demo.app.service.impl;
 
-import com.hand.demo.api.dto.InvCountRequest;
+import com.hand.demo.api.dto.InvCountRequestDTO;
 import com.hand.demo.infra.constant.StatusDoc;
 import io.choerodon.core.domain.Page;
+import io.choerodon.core.exception.CommonException;
 import io.choerodon.mybatis.pagehelper.PageHelper;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import com.hand.demo.domain.entity.InvCountHeader;
 import com.hand.demo.domain.repository.InvCountHeaderRepository;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -46,33 +46,30 @@ public class InvCountHeaderServiceImpl implements InvCountHeaderService {
     }
 
     @Override
-    public InvCountHeader insertOrUpdate(InvCountRequest invCountRequest, Long tenantId) {
-        InvCountHeader invCountHeader = invCountHeaderRepository.selectByCountNumber(invCountRequest.getBusinessKey());
+    public InvCountHeader insertOrUpdate(InvCountRequestDTO invCountRequestDTO, Long tenantId) {
+        InvCountHeader invCountHeader =
+                invCountHeaderRepository.
+                        selectByCountNumber(invCountRequestDTO.getBusinessKey());
         if (Objects.isNull(invCountHeader)) {
-            create(invCountRequest, tenantId);
-            return invCountHeaderRepository.selectByCountNumber(invCountRequest.getBusinessKey());
+            throw new CommonException("There is no Data");
         }
-        else {
-            log.info("It is in update");
-            if(invCountRequest.getStatusDoc().equals(StatusDoc.APPROVAL))
-            {
-                invCountHeader.setApprovedTime(Date.from(Instant.now()));
-            }
-            invCountHeader.setCountStatus(invCountRequest.getStatusDoc());
-            invCountHeader.setWorkflowId(invCountRequest.getWorkFlowId());
-            invCountHeader.setTenantId(tenantId);
-            update(invCountHeader);
+        if(invCountRequestDTO.getStatusDoc().equals(StatusDoc.APPROVAL)){
+            invCountHeader.setApprovedTime(Date.from(Instant.now()));
         }
-        return invCountHeaderRepository.selectByCountNumber(invCountRequest.getBusinessKey());
+        invCountHeader.setCountStatus(invCountRequestDTO.getStatusDoc());
+        invCountHeader.setWorkflowId(invCountRequestDTO.getWorkFlowId());
+        invCountHeader.setTenantId(tenantId);
+        update(invCountHeader);
+        return invCountHeaderRepository.selectByCountNumber(invCountRequestDTO.getBusinessKey());
     }
 
 
-    public void create(InvCountRequest invCountRequest, Long tenantId) {
+    public void create(InvCountRequestDTO invCountRequestDTO, Long tenantId) {
         log.info("It is in create");
         InvCountHeader invCountHeader = new InvCountHeader();
-        invCountHeader.setCountNumber(invCountRequest.getBusinessKey());
-        invCountHeader.setCountStatus(invCountRequest.getStatusDoc());
-        invCountHeader.setWorkflowId(invCountRequest.getWorkFlowId());
+        invCountHeader.setCountNumber(invCountRequestDTO.getBusinessKey());
+        invCountHeader.setCountStatus(invCountRequestDTO.getStatusDoc());
+        invCountHeader.setWorkflowId(invCountRequestDTO.getWorkFlowId());
         invCountHeader.setTenantId(tenantId);
         invCountHeaderRepository.insertSelective(invCountHeader);
     }

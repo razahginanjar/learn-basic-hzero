@@ -1,9 +1,7 @@
 package com.hand.demo.api.controller.v1;
 
-import com.hand.demo.api.dto.MessageRequest;
 import com.hand.demo.app.service.impl.MessageService;
 import com.hand.demo.config.SwaggerTags;
-import com.hand.demo.domain.entity.Task;
 import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.Api;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Api(tags = SwaggerTags.MESSENGER)
 @RestController("MessengerController.v1.47837")

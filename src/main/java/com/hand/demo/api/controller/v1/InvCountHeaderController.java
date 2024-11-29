@@ -1,6 +1,6 @@
 package com.hand.demo.api.controller.v1;
 
-import com.hand.demo.api.dto.InvCountRequest;
+import com.hand.demo.api.dto.InvCountRequestDTO;
 import io.choerodon.core.domain.Page;
 import io.choerodon.core.iam.ResourceLevel;
 import io.choerodon.mybatis.pagehelper.annotation.SortDefault;
@@ -83,7 +83,7 @@ public class InvCountHeaderController extends BaseController {
     )
     public ResponseEntity<?> callback(
             @PathVariable Long organizationId,
-            @RequestBody InvCountRequest invCountHeaders) {
+            @RequestBody InvCountRequestDTO invCountHeaders) {
         validObject(invCountHeaders);
         InvCountHeader invCountHeader = invCountHeaderService.insertOrUpdate(invCountHeaders, organizationId);
         return Results.success(invCountHeader);

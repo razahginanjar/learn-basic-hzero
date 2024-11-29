@@ -1,10 +1,8 @@
 package com.hand.demo.api.dto;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.mapstruct.Builder;
 
-public class MessageRequest {
+public class MessageRequestDTO {
     @JsonProperty(value = "userName")
     private String userName;
     @JsonProperty(value = "email")
@@ -14,14 +12,14 @@ public class MessageRequest {
     @JsonProperty(value = "employeeNumber")
     private String employeeNumber;
 
-    public MessageRequest(String userName, String email, String date, String employeeNumber) {
+    public MessageRequestDTO(String userName, String email, String date, String employeeNumber) {
         this.userName = userName;
         this.email = email;
         this.date = date;
         this.employeeNumber = employeeNumber;
     }
 
-    public MessageRequest() {
+    public MessageRequestDTO() {
     }
 
     public String getUserName() {

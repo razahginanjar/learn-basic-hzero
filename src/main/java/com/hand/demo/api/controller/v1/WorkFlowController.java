@@ -1,24 +1,21 @@
 package com.hand.demo.api.controller.v1;
 
-import com.hand.demo.api.dto.WorkFlowRequest;
+import com.hand.demo.api.dto.ApprovalRequest;
+import com.hand.demo.api.dto.WorkFlowRequestDTO;
 import com.hand.demo.app.service.WorkFlowService;
-import com.hand.demo.domain.entity.InvCountHeader;
 import io.choerodon.core.domain.Page;
 import io.choerodon.core.iam.ResourceLevel;
-import io.choerodon.mybatis.pagehelper.annotation.SortDefault;
-import io.choerodon.mybatis.pagehelper.domain.PageRequest;
-import io.choerodon.mybatis.pagehelper.domain.Sort;
 import io.choerodon.swagger.annotation.Permission;
 import io.swagger.annotations.ApiOperation;
 import org.hzero.boot.workflow.dto.PersonalTodoDTO;
 import org.hzero.boot.workflow.dto.ProcessInstanceDTO;
+import org.hzero.boot.workflow.dto.RunInstance;
 import org.hzero.boot.workflow.dto.RunTaskHistory;
 import org.hzero.core.base.BaseController;
 import org.hzero.core.util.Results;
-import org.hzero.mybatis.helper.SecurityTokenHelper;
+import org.hzero.starter.keyencrypt.core.Encrypt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -37,10 +34,10 @@ public class WorkFlowController extends BaseController {
     @PostMapping
     public ResponseEntity<?> save(
             @PathVariable Long organizationId,
-            @RequestBody WorkFlowRequest invCountHeaders) {
+            @RequestBody WorkFlowRequestDTO invCountHeaders) {
         validObject(invCountHeaders);
-        workFlowService.start(organizationId, invCountHeaders);
-        return Results.success("success");
+        RunInstance start = workFlowService.start(organizationId, invCountHeaders);
+        return Results.success(start);
     }
 
 
@@ -64,7 +61,7 @@ public class WorkFlowController extends BaseController {
     @PutMapping
     public ResponseEntity<?> withDrawlSpecific
             (@PathVariable Long organizationId,
-             @RequestParam(name = "flowKey")String flowKey,
+             @Encrypt @RequestParam(name = "flowKey")String flowKey,
              @RequestParam(name = "businessKey") String businessKey)
     {
         workFlowService.withDrawlSpecific(organizationId, flowKey, businessKey);
@@ -101,31 +98,33 @@ public class WorkFlowController extends BaseController {
 
 
 
-    @ApiOperation(value = "withdrawl specific")
+    @ApiOperation(value = "withdrawal specific")
     @Permission(level = ResourceLevel.ORGANIZATION)
     @PutMapping(
-
+        path = "/approve"
     )
     public ResponseEntity<?> approve
             (@PathVariable Long organizationId,
-             @RequestParam(name = "flowKey")String flowKey,
-             @RequestParam(name = "businessKey") String businessKey)
+             @RequestBody ApprovalRequest approvalRequest)
     {
-        workFlowService.approve(organizationId, flowKey, businessKey);
+        workFlowService.approve(organizationId, approvalRequest.getTaskIds(),
+                approvalRequest.getComments());
         return Results.success();
     }
 
 
 
-    @ApiOperation(value = "withdrawl specific")
+    @ApiOperation(value = "withdrawal specific")
     @Permission(level = ResourceLevel.ORGANIZATION)
-    @PutMapping
+    @PutMapping(
+            path = "/reject"
+    )
     public ResponseEntity<?> reject
             (@PathVariable Long organizationId,
-             @RequestParam(name = "flowKey")String flowKey,
-             @RequestParam(name = "businessKey") String businessKey)
+             @RequestBody ApprovalRequest approvalRequest)
     {
-        workFlowService.reject(organizationId, flowKey, businessKey);
+        workFlowService.reject(organizationId, approvalRequest.getTaskIds(),
+                approvalRequest.getComments());
         return Results.success();
     }
 }

@@ -4,13 +4,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
-public class MultiPartImplement implements MultipartFile {
+public class MultiPartImplementDTO implements MultipartFile {
     private final String name;
     private final String originalFilename;
     private final String contentType;
     private final byte[] content;
 
-    public MultiPartImplement(String name, String originalFilename, String contentType, byte[] content) {
+    public MultiPartImplementDTO(String name, String originalFilename, String contentType, byte[] content) {
         this.name = name;
         this.originalFilename = originalFilename;
         this.contentType = contentType;

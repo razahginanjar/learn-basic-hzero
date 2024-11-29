@@ -1,6 +1,5 @@
 package com.hand.demo.app.service.impl;
 
-import com.hand.demo.api.dto.MessageRequest;
 import com.hand.demo.domain.entity.User;
 import com.hand.demo.domain.repository.UserRepository;
 import org.hzero.boot.message.MessageClient;

@@ -2,7 +2,7 @@ package com.hand.demo.api.dto;
 
 import java.util.Map;
 
-public class WorkFlowRequest {
+public class WorkFlowRequestDTO {
     private Long tenantId;
     private String flowKey;
     private String businessKey;
@@ -10,10 +10,10 @@ public class WorkFlowRequest {
     private String starter;
     private Map<String, Object> variableMap;
 
-    public WorkFlowRequest() {
+    public WorkFlowRequestDTO() {
     }
 
-    public WorkFlowRequest(Long tenantId, String flowKey, String businessKey, String dimension, String starter, Map<String, Object> variableMap) {
+    public WorkFlowRequestDTO(Long tenantId, String flowKey, String businessKey, String dimension, String starter, Map<String, Object> variableMap) {
         this.tenantId = tenantId;
         this.flowKey = flowKey;
         this.businessKey = businessKey;

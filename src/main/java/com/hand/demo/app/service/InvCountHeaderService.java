@@ -1,6 +1,6 @@
 package com.hand.demo.app.service;
 
-import com.hand.demo.api.dto.InvCountRequest;
+import com.hand.demo.api.dto.InvCountRequestDTO;
 import io.choerodon.core.domain.Page;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
 import com.hand.demo.domain.entity.InvCountHeader;
@@ -31,6 +31,6 @@ public interface InvCountHeaderService {
      */
     void saveData(List<InvCountHeader> invCountHeaders);
 
-    InvCountHeader insertOrUpdate(InvCountRequest invCountRequest, Long tenantId);
+    InvCountHeader insertOrUpdate(InvCountRequestDTO invCountRequestDTO, Long tenantId);
 }
 

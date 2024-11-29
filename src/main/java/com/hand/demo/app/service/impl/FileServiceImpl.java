@@ -1,26 +1,20 @@
 package com.hand.demo.app.service.impl;
 
-import com.hand.demo.api.dto.MultiPartImplement;
-import com.hand.demo.api.dto.response.FileResponse;
 import com.hand.demo.app.service.FileService;
 import com.hand.demo.infra.constant.ConstantPath;
 import feign.Response;
 import org.hzero.boot.file.FileClient;
-import org.hzero.boot.file.constant.DocumentType;
 import org.hzero.boot.file.constant.FileType;
 import org.hzero.boot.file.dto.FileDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class FileServiceImpl implements FileService {
