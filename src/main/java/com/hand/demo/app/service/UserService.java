@@ -1,6 +1,9 @@
 package com.hand.demo.app.service;
 
+import com.hand.demo.api.dto.UserDTO;
 import com.hand.demo.domain.entity.User;
+
+import java.util.List;
 
 public interface UserService {
     /**
@@ -16,4 +19,5 @@ public interface UserService {
      * @param userId 用户ID
      */
     void delete(Long userId);
+    List<UserDTO> exportData(UserDTO userDTO);
 }

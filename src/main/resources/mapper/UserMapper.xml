@@ -1,16 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hand.demo.infra.mapper.UserMapper">
-    <!-- Result Map Definition -->
-    <resultMap id="UserResultMap" type="com.hand.demo.domain.entity.User">
-        <id column="id" property="id" />
-        <result column="employee_name" property="employeeName" />
-        <result column="employee_number" property="employeeNumber" />
-        <result column="email" property="email" />
-    </resultMap>
 
-    <select id="selectByUserAccount" resultMap="UserResultMap">
-        select ts.id, ts.employee_name, ts.employee_number, ts.email from todo_user as ts
-        where ts.user_account = #{userAccount}
+
+    <sql id = "BaseSql">
+            tu.ID,
+                tu.email,
+                tu.employee_name,
+                tu.employee_number,
+                tu.user_account,
+                tu.user_password,
+            tu.creation_date,         tu.created_by,         tu.last_updated_by,         tu.last_update_date,         tu.object_version_number    </sql>
+
+    <select id = "selectList" resultType = "com.hand.demo.api.dto.UserDTO"
+            parameterType="com.hand.demo.api.dto.UserDTO">
+        select
+        <include refid = "BaseSql"/>
+        from todo_user tu
+        <where>
+            <if test="id !=null">
+                and tu.ID = #{id,jdbcType = INTEGER}
+            </if>
+            <if test="email !=null">
+                and tu.email = #{email,jdbcType = VARCHAR}
+            </if>
+            <if test="employeeName !=null">
+                and tu.employee_name = #{employeeName,jdbcType = VARCHAR}
+            </if>
+            <if test="employeeNumber !=null">
+                and tu.employee_number = #{employeeNumber,jdbcType = VARCHAR}
+            </if>
+<!--            <if test="userAccount !=null">-->
+<!--                and tu.user_account = #{userAccount,jdbcType = VARCHAR}-->
+<!--            </if>-->
+<!--            <if test="userPassword !=null">-->
+<!--                and tu.user_password = #{userPassword,jdbcType = VARCHAR}-->
+<!--            </if>-->
+        </where>
     </select>
 </mapper>
+

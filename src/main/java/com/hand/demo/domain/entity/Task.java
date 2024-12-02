@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hzero.export.annotation.ExcelColumn;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +21,8 @@ import java.util.UUID;
 @ApiModel("任务信息")
 @ModifyAudit
 @VersionAudit
-@Table(name = "todo_task_47837")
+//@Table(name = "todo_task_47837")
+@Table(name = "todo_task_2")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Task extends AuditDomain {
     public static final String FIELD_ID = "id";
@@ -32,14 +34,19 @@ public class Task extends AuditDomain {
     private Long id;
     @NotNull(message = "用户ID不能为空")
     @ApiModelProperty("用户ID")
+    @ExcelColumn(en = "empId", order = 4)
     private Long employeeId;
     @ApiModelProperty("任务状态")
+    @ExcelColumn(en = "state", order = 1)
     private String state;
     @ApiModelProperty("任务编号")
+    @ExcelColumn(en = "task_number", order = 2)
     private String taskNumber;
     @Length(max = 240)
     @ApiModelProperty("任务描述")
+    @ExcelColumn(en = "task_description", order = 3)
     private String taskDescription;
+
     @NotNull
     @ApiModelProperty("租户ID")
     private Long tenantId;
@@ -49,6 +56,8 @@ public class Task extends AuditDomain {
     @Transient
     @ApiModelProperty("员工姓名")
     private String employeeName;
+
+    private String taskType;
     /**
      * 生成任务编号
      */
@@ -118,5 +127,13 @@ public class Task extends AuditDomain {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public String getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(String taskType) {
+        this.taskType = taskType;
     }
 }

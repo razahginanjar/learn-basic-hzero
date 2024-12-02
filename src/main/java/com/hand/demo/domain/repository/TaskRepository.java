@@ -1,5 +1,6 @@
 package com.hand.demo.domain.repository;
 
+import com.hand.demo.api.dto.TaskDTO;
 import com.hand.demo.domain.entity.Task;
 import io.choerodon.core.domain.Page;
 import io.choerodon.mybatis.pagehelper.domain.PageRequest;
@@ -39,4 +40,5 @@ public interface TaskRepository extends BaseRepository<Task> {
     List<Task> selectAll();
     Task selectDetailByTaskNumber(String taskNumber);
     Page<Task> pageTask(Task task, PageRequest pageRequest);
+    List<TaskDTO> selectList(TaskDTO taskDTO);
 }

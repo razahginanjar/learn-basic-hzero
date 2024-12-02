@@ -1,22 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hand.demo.infra.mapper.TaskMapper">
-    <resultMap id="TaskMapper" type="com.hand.demo.domain.entity.Task">
-        <!-- Primary Key Mapping -->
-        <id column="id" property="id"/>
 
-        <!-- Other Fields Mapping -->
-        <result column="employee_id" property="employeeId"/>
-<!--        <result column="employee_name" property="employeeName"/>-->
-<!--        <result column="employee_number" property="employeeNumber"/>-->
-        <result column="state" property="state"/>
-        <result column="task_description" property="taskDescription"/>
-        <result column="task_number" property="taskNumber"/>
-        <result column="tenant_id" property="tenantId"/>
-    </resultMap>
 
-    <select id="selectTask" resultType="com.hand.demo.domain.entity.Task">
-        select tt.id, tt.employee_id, tt.task_description,
-               tt.task_number, tt.state, tt.tenant_id from todo_task as tt
+    <sql id = "BaseSql">
+            tt.ID,
+                tt.EMPLOYEE_ID,
+                tt.STATE,
+                tt.TASK_DESCRIPTION,
+                tt.TASK_NUMBER,
+                tt.task_type,
+                tt.TENANT_ID,
+            tt.creation_date,         tt.created_by,         tt.last_updated_by,         tt.last_update_date,         tt.object_version_number    </sql>
+
+    <select id = "selectList" resultType = "com.hand.demo.api.dto.TaskDTO"
+        parameterType="com.hand.demo.api.dto.TaskDTO">
+        select
+        <include refid = "BaseSql"/>
+        from todo_task_2 tt
+        <where>
+            <if test="id !=null">
+                and tt.ID = #{id,jdbcType = INTEGER}
+            </if>
+            <if test="employeeId !=null">
+                and tt.EMPLOYEE_ID = #{employeeId,jdbcType = INTEGER}
+            </if>
+            <if test="state !=null">
+                and tt.STATE = #{state,jdbcType = VARCHAR}
+            </if>
+            <if test="taskDescription !=null">
+                and tt.TASK_DESCRIPTION = #{taskDescription,jdbcType = VARCHAR}
+            </if>
+            <if test="taskNumber !=null">
+                and tt.TASK_NUMBER = #{taskNumber,jdbcType = VARCHAR}
+            </if>
+            <if test="taskType !=null">
+                and tt.task_type = #{taskType,jdbcType = VARCHAR}
+            </if>
+            <if test="tenantId !=null">
+                and tt.TENANT_ID = #{tenantId,jdbcType = INTEGER}
+            </if>
+            <if test="empIdList !=null and empIdList.size() > 0">
+                and tt.EMPLOYEE_ID in
+                <foreach collection="empIdList" open="(" close=")" item="empId" separator=",">
+                    #{empId}
+                </foreach>
+            </if>
+        </where>
     </select>
 </mapper>
+

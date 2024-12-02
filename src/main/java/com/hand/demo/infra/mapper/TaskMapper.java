@@ -1,5 +1,6 @@
 package com.hand.demo.infra.mapper;
 
+import com.hand.demo.api.dto.TaskDTO;
 import com.hand.demo.domain.entity.Task;
 import io.choerodon.mybatis.common.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,5 +16,5 @@ public interface TaskMapper extends BaseMapper<Task> {
      * @return Task
      */
     List<Task> selectTask(Task params);
-
+    List<TaskDTO> selectList(TaskDTO params);
 }

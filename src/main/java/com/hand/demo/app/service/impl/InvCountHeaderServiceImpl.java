@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.hand.demo.app.service.InvCountHeaderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.hand.demo.domain.entity.InvCountHeader;
 import com.hand.demo.domain.repository.InvCountHeaderRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class InvCountHeaderServiceImpl implements InvCountHeaderService {
         return PageHelper.doPageAndSort(pageRequest, () -> invCountHeaderRepository.selectList(invCountHeader));
     }
 
+
     @Override
     public void saveData(List<InvCountHeader> invCountHeaders) {
         List<InvCountHeader> insertList = invCountHeaders.stream().filter(line -> line.getCountHeaderId() == null).collect(Collectors.toList());
@@ -51,7 +54,7 @@ public class InvCountHeaderServiceImpl implements InvCountHeaderService {
                 invCountHeaderRepository.
                         selectByCountNumber(invCountRequestDTO.getBusinessKey());
         if (Objects.isNull(invCountHeader)) {
-            throw new CommonException("There is no Data");
+            throw new CommonException("demo-47837.inv_not_found_error", invCountRequestDTO.getBusinessKey());
         }
         if(invCountRequestDTO.getStatusDoc().equals(StatusDoc.APPROVAL)){
             invCountHeader.setApprovedTime(Date.from(Instant.now()));
@@ -61,6 +64,11 @@ public class InvCountHeaderServiceImpl implements InvCountHeaderService {
         invCountHeader.setTenantId(tenantId);
         update(invCountHeader);
         return invCountHeaderRepository.selectByCountNumber(invCountRequestDTO.getBusinessKey());
+    }
+
+    @Override
+    public InvCountHeader getByCountNumber(String countNumber) {
+        return invCountHeaderRepository.selectByCountNumber(countNumber);
     }
 
 

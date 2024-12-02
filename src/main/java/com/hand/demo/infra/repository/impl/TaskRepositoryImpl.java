@@ -1,5 +1,6 @@
 package com.hand.demo.infra.repository.impl;
 
+import com.hand.demo.api.dto.TaskDTO;
 import com.hand.demo.domain.entity.Task;
 import com.hand.demo.domain.repository.TaskRepository;
 import com.hand.demo.infra.mapper.TaskMapper;
@@ -11,6 +12,7 @@ import org.hzero.mybatis.base.impl.BaseRepositoryImpl;
 import org.hzero.mybatis.common.Criteria;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -24,6 +26,11 @@ public class TaskRepositoryImpl extends BaseRepositoryImpl<Task> implements Task
     @Override
     public Page<Task> pageTask(Task task, PageRequest pageRequest) {
         return PageHelper.doPage(pageRequest, () -> taskMapper.selectTask(task));
+    }
+
+    @Override
+    public List<TaskDTO> selectList(TaskDTO taskDTO) {
+        return taskMapper.selectList(taskDTO);
     }
 
     @Override

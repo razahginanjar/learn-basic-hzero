@@ -32,5 +32,6 @@ public interface InvCountHeaderService {
     void saveData(List<InvCountHeader> invCountHeaders);
 
     InvCountHeader insertOrUpdate(InvCountRequestDTO invCountRequestDTO, Long tenantId);
+    InvCountHeader getByCountNumber(String countNumber);
 }
 

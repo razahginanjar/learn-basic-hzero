@@ -103,3 +103,6 @@ logging:
 #  scheduler:
 #    executor-code: DEMO-EXEC-47837
 #    auto-register: true
+hzero:
+  cache-value:
+    enable: true

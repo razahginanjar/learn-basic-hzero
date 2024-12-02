@@ -42,7 +42,8 @@ public class TaskController extends BaseController {
     @Permission(level = ResourceLevel.ORGANIZATION)
     @ApiOperation(value = "创建task")
     @PostMapping
-    public ResponseEntity<Task> create(@PathVariable("organizationId") Long tenantId, @RequestBody Task task) {
+    public ResponseEntity<Task> create(@PathVariable("organizationId") Long tenantId,
+                                       @RequestBody Task task) {
         task.setTenantId(tenantId);
         // 简单数据校验
         this.validObject(task);
