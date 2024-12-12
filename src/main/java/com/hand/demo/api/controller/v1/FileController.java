@@ -1,5 +1,6 @@
 package com.hand.demo.api.controller.v1;
 
+import com.hand.demo.api.dto.FileConfigUploadDTO;
 import com.hand.demo.api.dto.response.FileResponse;
 import com.hand.demo.app.service.FileService;
 import com.hand.demo.config.SwaggerTags;
@@ -44,7 +45,7 @@ public class FileController extends BaseController {
     }
 
     @Permission(level = ResourceLevel.SITE)
-    @ApiOperation(value = "Upload File")
+    @ApiOperation(value = "Upload File text")
     @PostMapping(
             path = "/upload"
     )
@@ -89,7 +90,7 @@ public class FileController extends BaseController {
     }
 
     @Permission(level = ResourceLevel.SITE)
-    @ApiOperation(value = "Upload File")
+    @ApiOperation(value = "Upload File image")
     @PostMapping(
             path = "/upload-image"
     )
@@ -122,7 +123,7 @@ public class FileController extends BaseController {
     }
 
     @Permission(level = ResourceLevel.SITE)
-    @ApiOperation(value = "Upload File")
+    @ApiOperation(value = "watermark")
     @PostMapping(
             path = "/watermark"
     )
@@ -134,6 +135,19 @@ public class FileController extends BaseController {
         Response response = fileService.addWaterMark(organizationId, fileKey, waterMarkCode);
         return ResponseEntity.status(HttpStatus.OK).body(
                 response
+        );
+    }
+
+    @Permission(level = ResourceLevel.SITE)
+    @ApiOperation(value = "get info config")
+    @GetMapping(
+            path = "/info-config"
+    )
+    public ResponseEntity<?> getInfoConfigUpload(
+            @PathVariable(name = "organizationId") Long organizationId)
+    {
+        List<FileConfigUploadDTO> infoUploadConfig = fileService.getInfoUploadConfig(organizationId);
+        return ResponseEntity.status(HttpStatus.OK).body(infoUploadConfig
         );
     }
 

@@ -1,5 +1,6 @@
 package com.hand.demo.app.service;
 
+import com.hand.demo.api.dto.FileConfigUploadDTO;
 import com.hand.demo.api.dto.response.FileResponse;
 import feign.Response;
 import org.hzero.boot.file.dto.FileDTO;
@@ -33,4 +34,6 @@ public interface FileService {
             String dir,
             String waterMarkCode
     );
+
+    List<FileConfigUploadDTO> getInfoUploadConfig(Long tenantId);
 }

@@ -59,16 +59,11 @@ public class UserServiceImpl implements UserService{
     @Override
     @ProcessCacheValue
     public List<UserDTO> exportData(UserDTO userDTO) {
-        String s1 = redisHelper.strGet("662");
+        String s1 = redisHelper.strGet(HZeroCacheKey.USER+":2302");
         log.info("created_by:{}", s1);
 
-//        String s = redisHelper.strGet(HZeroCacheKey.USER + ":realName");
-//        log.info( "this is info of {}", s);
-        //save to dto redis
-        DemoRedisDTO demoRedisDTO = new DemoRedisDTO();
-        demoRedisDTO.setCreatedBy(1L);
-        demoRedisDTO.setCreatedUserName("Razah");
-
+        String s2 = redisHelper.hshGet("2302", HZeroCacheKey.USER);
+        log.info(s2);
 
         List<UserDTO> userDTOS = userRepository.selectList(userDTO);
         List<Long> ids = new ArrayList<>();

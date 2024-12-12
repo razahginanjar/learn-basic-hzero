@@ -31,7 +31,9 @@
                 tich.supervisor_ids,
                 tich.tenant_id,
                 tich.workflow_id,
-            tich.creation_date,         tich.created_by,         tich.last_updated_by,         tich.last_update_date,         tich.object_version_number    </sql>
+            tich.creation_date,         tich.created_by,
+            tich.last_updated_by,         tich.last_update_date,
+            tich.object_version_number    </sql>
 
     <select id = "selectList" resultType = "com.hand.demo.domain.entity.InvCountHeader">
         select

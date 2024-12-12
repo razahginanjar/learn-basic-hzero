@@ -1,14 +1,23 @@
 package com.hand.demo.app.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hand.demo.api.dto.FileConfigUploadDTO;
 import com.hand.demo.app.service.FileService;
 import com.hand.demo.infra.constant.ConstantPath;
+import com.hand.demo.infra.mapper.ExampleMapper;
 import feign.Response;
+import org.hzero.boot.apaas.common.userinfo.domain.UserVO;
+import org.hzero.boot.apaas.common.userinfo.infra.feign.IamRemoteService;
 import org.hzero.boot.file.FileClient;
 import org.hzero.boot.file.constant.FileType;
 import org.hzero.boot.file.dto.FileDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +29,15 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
     private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
     private final FileClient fileClient;
+
+    @Autowired
+    private ExampleMapper configMapper;
+    @Autowired
+    private IamRemoteService iamRemoteService;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
     private static final String bucketName = "gp1";
     private static final String storageCode = "MINIO_21995";
 
@@ -194,6 +212,26 @@ public class FileServiceImpl implements FileService {
     @Override
     public Response addWaterMark(Long organizationId, String fileKey, String waterMarkCode) {
         return fileClient.watermarkByKey(organizationId, fileKey, waterMarkCode);
+    }
+
+    @Override
+    public List<FileConfigUploadDTO> getInfoUploadConfig(Long tenantId) {
+        try{
+            ResponseEntity<String> s = iamRemoteService.selectSelf();
+            String body = s.getBody();
+
+            UserVO userVO = objectMapper.readValue(body, UserVO.class);
+            Boolean tenantAdminFlag = userVO.getTenantAdminFlag();
+            FileConfigUploadDTO fileConfigUploadDTO = new FileConfigUploadDTO();
+            if(tenantAdminFlag != null && !tenantAdminFlag)
+            {
+                fileConfigUploadDTO.setCreatedBy(userVO.getId());
+            }
+            return configMapper.selectList(fileConfigUploadDTO);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }
